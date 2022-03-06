@@ -16,6 +16,7 @@ const Transfer = () => {
   }
   const [transaction, setTransaction] = useState(defaultTransaction)
   const [payeeList, setPayeeList] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
   const [transferStatus, setTransferStatus] = useState({ isSuccess: false, isError: false, errMsg: '' })
 
   const updatePayee = (e) => {
@@ -38,11 +39,13 @@ const Transfer = () => {
 
   useEffect(() => {
     (async () => {
+      setIsLoading(true)
       const payeeListApi = await fetchApi({ url: '/payees' })
 
       if ((payeeListApi.status === 'success') && payeeListApi.data) {
         setPayeeList(payeeListApi.data)
       }
+      setIsLoading(false)
     })()
 
     return () => {
@@ -53,7 +56,8 @@ const Transfer = () => {
   return (
     <Layout
       title="Transfer"
-      footer={<Footer defaultTransaction={defaultTransaction} transaction={transaction} setTransaction={setTransaction} setTransferStatus={setTransferStatus} />}
+      footer={<Footer defaultTransaction={defaultTransaction} transaction={transaction} setTransaction={setTransaction} setIsLoading={setIsLoading} setTransferStatus={setTransferStatus} />}
+      isLoading={isLoading}
       backBtn
     >
       <div className="form-container">

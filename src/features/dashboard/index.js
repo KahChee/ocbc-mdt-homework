@@ -12,9 +12,11 @@ const Dashboard = () => {
   }
   const [account, setAccount] = useState(defaultAccount)
   const [transactions, setTransactions] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     (async () => {
+      setIsLoading(true)
       const [accountApi, transactionsApi] = await Promise.allSettled([
         fetchApi({
           url: '/balance'
@@ -31,6 +33,7 @@ const Dashboard = () => {
       if (transactionsApi.value && (transactionsApi.value.status === 'success')) {
         setTransactions(formatTransactions({ transactions: transactionsApi.value.data }))
       }
+      setIsLoading(false)
     })()
 
     return () => {
@@ -41,6 +44,7 @@ const Dashboard = () => {
   return (
     <Layout
       footer={<Footer />}
+      isLoading={isLoading}
       logoutBtn
     >
       <div className="account-container">

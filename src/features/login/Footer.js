@@ -4,7 +4,7 @@ import Button from '../../common/sharedComponents/form/Button';
 import { login } from '../../common/authentication';
 import { setCookie } from '../../common/helpers';
 
-const Footer = ({ user, setUser }) => {
+const Footer = ({ user, setUser, setIsLoading, setLoginStatus }) => {
   const navigate = useNavigate()
 
   const clearForm = () => {
@@ -18,15 +18,18 @@ const Footer = ({ user, setUser }) => {
 
   const handleLogin = async () => {
     if ((user.username.value !== '') && (user.password.value !== '')) {
+      setIsLoading(true)
       clearForm()
       const response = await login({ username: user.username.value, password: user.password.value })
+      setIsLoading(false)
 
       if (response.status === 'success') {
         setCookie('token', response.token, 0.1)
         navigate('/dashboard')
       }
       else {
-        navigate('/')
+        setLoginStatus({ isSuccess: false, isError: true, errMsg: response.error })
+        // navigate('/')
       }
     }
     else {

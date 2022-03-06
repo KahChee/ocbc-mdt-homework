@@ -13,6 +13,7 @@ const Register = () => {
     conPassword: { value: '', hasError: false }
   }
   const [user, setUser] = useState(defaultUser)
+  const [isLoading, setIsLoading] = useState(false)
   const [registerStatus, setRegisterStatus] = useState({ isSuccess: false, isError: false, errMsg: '' })
 
   const updateUsername = (e) => {
@@ -42,7 +43,8 @@ const Register = () => {
   return (
     <Layout
       title="Register"
-      footer={<Footer defaultUser={defaultUser} user={user} setUser={setUser} setRegisterStatus={setRegisterStatus} />}
+      footer={<Footer defaultUser={defaultUser} user={user} setUser={setUser} setIsLoading={setIsLoading} setRegisterStatus={setRegisterStatus} />}
+      isLoading={isLoading}
       backBtn
     >
       <div className="form-container">

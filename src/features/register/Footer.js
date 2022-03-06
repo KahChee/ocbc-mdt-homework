@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '../../common/sharedComponents/form/Button';
 import { register } from '../../common/authentication';
 
-const Footer = ({ defaultUser, user, setUser, setRegisterStatus }) => {
+const Footer = ({ defaultUser, user, setUser, setIsLoading, setRegisterStatus }) => {
   const clearForm = () => {
     setUser(prevState => {
       return {
@@ -15,8 +15,10 @@ const Footer = ({ defaultUser, user, setUser, setRegisterStatus }) => {
 
   const handleRegister = async () => {
     if ((user.username.value !== '') && (user.password.value !== '') && (user.conPassword.value === user.password.value)) {
+      setIsLoading(true)
       clearForm()
       const response = await register({ username: user.username.value, password: user.password.value })
+      setIsLoading(false)
 
       if (response.status === 'success') {
         setUser(defaultUser) // Reset form

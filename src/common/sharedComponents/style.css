@@ -58,9 +58,28 @@
 .info-box.error a {
   color: #fe3636;
 }
+@keyframes spinner-grow {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: none;
+  }
+}
+.spinner-grow {
+  display: inline-block;
+  background-color: currentColor;
+  width: 4rem;
+  height: 4rem;
+  vertical-align: -0.125em;
+  border-radius: 50%;
+  opacity: 0;
+  animation: 0.75s linear infinite spinner-grow;
+}
 .loader-overlay {
   display: none;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.6);
   position: fixed;
   top: 0px;
   left: 0px;
@@ -72,7 +91,7 @@
   display: block;
 }
 .loader-container {
-  display: flex;
+  display: none;
   position: fixed;
   top: 0px;
   left: 0px;
@@ -83,5 +102,5 @@
   align-items: center;
 }
 .loader-container.show {
-  display: block;
+  display: flex;
 }

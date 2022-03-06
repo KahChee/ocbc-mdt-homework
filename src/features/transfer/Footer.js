@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '../../common/sharedComponents/form/Button';
 import { fetchApi } from '../../common/helpers';
 
-const Footer = ({ defaultTransaction, transaction, setTransaction, setTransferStatus }) => {
+const Footer = ({ defaultTransaction, transaction, setTransaction, setIsLoading, setTransferStatus }) => {
   const clearForm = () => {
     setTransaction(prevState => {
       return {
@@ -15,12 +15,14 @@ const Footer = ({ defaultTransaction, transaction, setTransaction, setTransferSt
 
   const handleTransfer = async () => {
     if ((transaction.payee.value !== '') && (transaction.amount.value !== '') && (transaction.description.value !== '')) {
+      setIsLoading(true)
       clearForm()
       const response = await fetchApi({
         url: '/transfer',
         method: 'POST',
         data: { receipientAccountNo: transaction.payee.value, amount: Number(transaction.amount.value), description: transaction.description.value }
       })
+      setIsLoading(false)
 
       if (response.status === 'success') {
         setTransaction(defaultTransaction) // Reset form
